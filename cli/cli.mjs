@@ -30,9 +30,9 @@ async function main() {
     rl.close();
     return;
   }
-  const his = await question("HIS: ");
-  if (his < 0 || his > 360) {
-    console.log("HIS must be between 0 and 360");
+  const hsi = await question("HSI: ");
+  if (hsi < 0 || hsi > 360) {
+    console.log("HSI must be between 0 and 360");
     rl.close();
     return;
   }
@@ -48,7 +48,7 @@ async function main() {
   try {
     await api.post("/", {
       altitude: altitude,
-      his: his,
+      hsi: hsi,
       adi: adi,
     });
   } catch (e) {
