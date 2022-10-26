@@ -31,6 +31,7 @@ function sendEventsToAll(newInformation) {
 async function addInformation(request, response: Response, next) {
   var data: IData = request.body;
   //TODO: look for optimal way to do this
+  //verify if data is valid and not empty
   if(data.altitude && data.his && data.adi && data.altitude != "" && data.his != "" && data.adi != "" &&  Number(data.altitude) >= 0  
   && Number(data.his) >= 0 && Number(data.adi) >= -100 && Number(data.altitude) <= 3000 && Number(data.his) <= 360 && Number(data.adi) <= 100){
    
