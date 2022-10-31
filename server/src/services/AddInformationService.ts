@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import { Client } from "../model/Client";
-import { repositories } from "../repositories/Respositories";
+import { repositories } from "../repositories/Repositories";
 
 class AddInformationService {
   verifyAltitude(altitude: String) {
@@ -19,7 +19,13 @@ class AddInformationService {
     );
   }
 
-  execute(response: Response, request: Request) {
+  /**
+   * This method is responsible for adding new data to the repository, verifying the data and sending it to all connected clients
+   *@param response - response from the request
+   *@param request - request from the client
+   *@param repository - instance of the repository
+   */
+  execute(response: Response, request: Request, repository: repositories) {
     const data: IData = request.body;
     //verify if data is valid and not empty
     if (
@@ -28,11 +34,11 @@ class AddInformationService {
       this.verifyADI(data.adi)
     ) {
       response.status(201).send();
-      repositories.getInstance().setInformations(data);
-      console.log(repositories.getInstance().getInformations());
+      repository.setInformations(data);
+      console.log(repository.getInformations());
       return this.sendEventsToAll(
-        repositories.getInstance().getInformations(),
-        repositories.getInstance().getClients()
+        repository.getInformations(),
+        repository.getClients()
       );
     }
     response.status(400).send({ message: "the values are not valid" });

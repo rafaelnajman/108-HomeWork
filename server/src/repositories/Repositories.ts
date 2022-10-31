@@ -1,6 +1,17 @@
 import { Client } from "../model/Client";
 
-//singletone
+/**
+ * This class is responsible for storing the clients and the data using the Singleton pattern
+ * @param clients - array of clients
+ * @param informations - object with the data
+ * @param instance - instance of the repository
+ * @method addClient - add a new client to the repository
+ * @method removeClient - remove a client from the repository
+ * @method getClients - return the array of clients
+ * @method setInformations - set the data in the repository
+ * @method getInformations - return the data
+ * @method getInstance - return the instance of the repository
+ */
 class repositories {
   private clients: Client[] = [];
   private informations: IData = {
@@ -19,7 +30,7 @@ class repositories {
     }
     return repositories.INSTANCE;
   }
-  setClient(client: Client) {
+  addClient(client: Client) {
     this.clients.push(client);
   }
   getClients() {

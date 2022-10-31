@@ -2,10 +2,16 @@ import { Response, Request } from "express";
 
 import { Client } from "../model/Client";
 
-import { repositories } from "../repositories/Respositories";
+import { repositories } from "../repositories/Repositories";
 
 class NewConnectionService {
-  execute(response: Response, request: Request) {
+  /**
+   * This method is responsible for opening a new SSE connection and adding the client to the repository
+   *@param response - response from the request
+   *@param request - request from the client
+   *@param repository - instance of the repository
+   */
+  execute(response: Response, request: Request, repository: repositories) {
     response.writeHead(200, {
       //SSE headers
       "Content-Type": "text/event-stream",
@@ -13,19 +19,17 @@ class NewConnectionService {
       Connection: "keep-alive",
     });
 
-    const data = ` ${JSON.stringify(
-      repositories.getInstance().getInformations()
-    )}\n\n`;
+    const data = ` ${JSON.stringify(repository.getInformations())}\n\n`;
 
     response.write(data);
 
     const clientId = new Date().getTime();
 
-    repositories.getInstance().setClient(new Client(clientId, response));
+    repository.addClient(new Client(clientId, response));
 
     request.on("close", () => {
       console.log(`${clientId} Connection closed`);
-      repositories.getInstance().removeClient(new Client(clientId, response));
+      repository.removeClient(new Client(clientId, response));
     });
   }
 }
