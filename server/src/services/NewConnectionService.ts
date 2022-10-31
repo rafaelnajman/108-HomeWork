@@ -2,16 +2,10 @@ import { Response, Request } from "express";
 
 import { Client } from "../model/Client";
 
+import { repositories } from "../repositories/Respositories";
+
 class NewConnectionService {
-  filterById(id: Number, clients: Client[]) {
-    clients = clients.filter((client) => client.getId() !== id);
-  }
-  execute(
-    informations: IData,
-    clients: Client[],
-    response: Response,
-    request: Request
-  ) {
+  execute(response: Response, request: Request) {
     response.writeHead(200, {
       //SSE headers
       "Content-Type": "text/event-stream",
@@ -19,17 +13,19 @@ class NewConnectionService {
       Connection: "keep-alive",
     });
 
-    const data = ` ${JSON.stringify(informations)}\n\n`;
+    const data = ` ${JSON.stringify(
+      repositories.getInstance().getInformations()
+    )}\n\n`;
 
     response.write(data);
 
     const clientId = new Date().getTime();
 
-    clients.push(new Client(clientId, response));
+    repositories.getInstance().setClient(new Client(clientId, response));
 
     request.on("close", () => {
       console.log(`${clientId} Connection closed`);
-      this.filterById(clientId, clients);
+      repositories.getInstance().removeClient(new Client(clientId, response));
     });
   }
 }

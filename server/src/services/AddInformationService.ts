@@ -1,34 +1,26 @@
 import { Response, Request } from "express";
 import { Client } from "../model/Client";
+import { repositories } from "../repositories/Respositories";
 
 class AddInformationService {
   verifyAltitude(altitude: String) {
-    if (Number(altitude) >= 0 && Number(altitude) <= 3000 && altitude != "") {
-      return true;
-    }
-    return false;
+    return Number(altitude) >= 0 && Number(altitude) <= 3000 && altitude != "";
   }
   verifyHSI(hsi: String) {
-    if (Number(hsi) >= 0 && Number(hsi) <= 360 && hsi != "") {
-      return true;
-    }
-    return false;
+    return Number(hsi) >= 0 && Number(hsi) <= 360 && hsi != "";
   }
   verifyADI(adi: String) {
-    if (Number(adi) >= -100 && Number(adi) <= 100 && adi != "") {
-      return true;
-    }
-    return false;
+    return Number(adi) >= -100 && Number(adi) <= 100 && adi != "";
   }
 
-  public execute(
-    clients: Client[],
-    informations: IData,
-    response: Response,
-    request: Request
-  ) {
-    var data: IData = request.body;
-    //TODO: look for optimal way to do this
+  sendEventsToAll(newInformation, clients: Client[]) {
+    clients.forEach((client) =>
+      client.response.write(`data: ${JSON.stringify(newInformation)}\n\n`)
+    );
+  }
+
+  execute(response: Response, request: Request) {
+    const data: IData = request.body;
     //verify if data is valid and not empty
     if (
       this.verifyAltitude(data.altitude) &&
@@ -36,16 +28,14 @@ class AddInformationService {
       this.verifyADI(data.adi)
     ) {
       response.status(201).send();
-      informations = { ...data };
-      console.log(informations);
-      return this.sendEventsToAll(informations, clients);
+      repositories.getInstance().setInformations(data);
+      console.log(repositories.getInstance().getInformations());
+      return this.sendEventsToAll(
+        repositories.getInstance().getInformations(),
+        repositories.getInstance().getClients()
+      );
     }
     response.status(400).send({ message: "the values are not valid" });
-  }
-  sendEventsToAll(newInformation, clients: Client[]) {
-    clients.forEach((client) =>
-      client.response.write(`data: ${JSON.stringify(newInformation)}\n\n`)
-    );
   }
 }
 

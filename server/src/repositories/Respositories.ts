@@ -1,7 +1,41 @@
 import { Client } from "../model/Client";
 
-var clients: Client[] = [];
+//singletone
+class repositories {
+  private clients: Client[] = [];
+  private informations: IData = {
+    altitude: "",
+    hsi: "",
+    adi: "",
+  };
 
-var informations: IData;
+  private static INSTANCE: repositories;
 
-export { clients, informations };
+  private constructor() {}
+
+  public static getInstance(): repositories {
+    if (!repositories.INSTANCE) {
+      repositories.INSTANCE = new repositories();
+    }
+    return repositories.INSTANCE;
+  }
+  setClient(client: Client) {
+    this.clients.push(client);
+  }
+  getClients() {
+    return this.clients;
+  }
+  removeClient(client: Client) {
+    this.clients = this.clients.filter((c) => c.getId() !== client.getId());
+  }
+
+  getInformations() {
+    return this.informations;
+  }
+
+  setInformations(informations: IData) {
+    this.informations = informations;
+  }
+}
+
+export { repositories };
