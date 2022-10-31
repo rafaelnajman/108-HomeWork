@@ -15,7 +15,7 @@ export function ContextProvider({ children }: IProps): JSX.Element {
   const [isVisual, setIsVisual] = useState(true);
 
   return (
-    <Context.Provider value={{ isVisual , setIsVisual }}>
+    <Context.Provider value={{ isVisual, setIsVisual }}>
       {children}
     </Context.Provider>
   );

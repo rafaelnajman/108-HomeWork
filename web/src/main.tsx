@@ -7,7 +7,7 @@ import "./styles/global.css";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ContextProvider>
-    <App />
+      <App />
     </ContextProvider>
   </React.StrictMode>
 );

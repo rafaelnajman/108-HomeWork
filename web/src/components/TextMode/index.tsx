@@ -7,9 +7,18 @@ interface TextModeProps {
 export function TextMode({ altitude, hsi, adi }: TextModeProps) {
   return (
     <>
-      <div>{altitude}</div>
-      <div>{hsi}</div>
-      <div>{adi}</div>
+      <div className="bg-white font-bold rounded-sm py-4 px-8 text-center hover:bg-gray-200 transition-colors">
+        <h2>ALTITUDE:</h2>
+        <p className="text-2xl">{altitude}</p>
+      </div>
+      <div className="bg-white font-bold rounded-sm py-4 px-8 text-center hover:bg-gray-200 transition-colors">
+        <h2>HSI:</h2>
+        <p className="text-2xl">{hsi}</p>
+      </div>
+      <div className="bg-white font-bold rounded-sm py-4 px-8 text-center hover:bg-gray-200 transition-colors">
+        <h2>ADI:</h2>
+        <p className="text-2xl">{adi}</p>
+      </div>
     </>
   );
 }
