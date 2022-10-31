@@ -10,7 +10,7 @@ export function AdiVisual({ adi }: { adi: string }) {
   }
   return (
     <div
-      className="h-[340px] w-[340px] border-gray-500 border-4 rounded-full"
+      className="h-[340px] w-[340px] border-gray-500 border-4 rounded-full max-lg:mb-10 "
       //if adi is 100  so the background is blue and if adi is -100 so the background is green and if adi is 0 so the background is half blue and half green
       style={{
         backgroundColor: calculateBackgroundColor(),
