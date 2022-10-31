@@ -18,7 +18,7 @@ export function Button({ children }: ButtonProps): JSX.Element {
       {isButtonVisual ? (
         <button
           onClick={() => setIsVisual(true)}
-          className={`px-8 py-4 rounded-sm ${
+          className={`px-8 py-4 rounded-sm shadow ${
             isVisual
               ? "bg-slate-800 hover:bg-slate-600 text-white"
               : "bg-white hover:bg-slate-400"
@@ -29,7 +29,7 @@ export function Button({ children }: ButtonProps): JSX.Element {
       ) : (
         <button
           onClick={() => setIsVisual(false)}
-          className={`px-8 py-4  rounded-sm ${
+          className={`px-8 py-4  rounded-sm shadow ${
             !isVisual
               ? "bg-slate-800 hover:bg-slate-600 text-white"
               : "bg-white hover:bg-slate-400"
